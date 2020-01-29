@@ -30,11 +30,10 @@ public class Movement : MonoBehaviour
 
     [Space]
     [Header("Control Booleans")]
-    public bool canMoveSK;
-    public bool wallGrabSK;
-    public bool wallJumpedSK;
-    public bool wallSlideSK;
-    public bool isDashingSK;
+    public bool canMoveLeftSK;
+    public bool canMoveRightSK;
+    public bool canJumpSK;
+    public bool canDashSK;
 
     [Space]
 
@@ -67,19 +66,17 @@ public class Movement : MonoBehaviour
         float yRaw = Input.GetAxisRaw("Vertical");
         Vector2 dir = new Vector2(x, y);
 
-if(canMoveSK)
-{
+
         Walk(dir);
         anim.SetHorizontalMovement(x, y, rb.velocity.y);
-}
-if(wallGrabSK){
+
         if (coll.onWall && Input.GetButton("Fire3") && canMove)
         {
             if(side != coll.wallSide)
                 anim.Flip(side*-1);
             wallGrab = true;
             wallSlide = false;
-        }}
+        }
 
         if (Input.GetButtonUp("Fire3") || !coll.onWall || !canMove)
         {
@@ -119,8 +116,7 @@ if(wallGrabSK){
 
         if (!coll.onWall || coll.onGround)
             wallSlide = false;
-if(wallJumpedSK)
-{
+
         if (Input.GetButtonDown("Jump"))
         {
             anim.SetTrigger("jump");
@@ -130,7 +126,6 @@ if(wallJumpedSK)
             if (coll.onWall && !coll.onGround)
                 WallJump();
         }
-}
 
 
         if (Input.GetButtonDown("Fire1") && !hasDashed)
@@ -165,11 +160,6 @@ if(wallJumpedSK)
             side = -1;
             anim.Flip(side);
         }
-
-
-
-
-
     }
 
     void GroundTouch()
